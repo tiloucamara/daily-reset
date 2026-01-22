@@ -7,16 +7,47 @@
   --foreground: #000000;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #000000;
-    --foreground: #ffffff;
-  }
+/* Dark mode is controlled via the "dark" class on <html> (handled by next-themes)
+   This avoids forcing a dark UI from the OS-level preference and gives
+   explicit control through the ThemeProvider and user toggle. */
+
+.dark {
+  --background: #0b1220; /* dark navy */
+  --foreground: #e6eef8; /* light text */
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
+}
+
+/* Layout helpers */
+.app-container {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.card {
+  background: rgba(255,255,255,0.9);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+  padding: 1.25rem;
+}
+
+.dark .card {
+  background: rgba(13,17,23,0.6);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
 }
 
 /* Scrollbar personnalisée */
@@ -37,17 +68,15 @@ body {
   background: #555;
 }
 
-/* Mode sombre pour scrollbar */
-@media (prefers-color-scheme: dark) {
-  ::-webkit-scrollbar-track {
-    background: #1a1a1a;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: #444;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: #666;
-  }
+/* Dark scrollbar when `.dark` is set */
+.dark ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #666;
 }

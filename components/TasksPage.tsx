@@ -252,131 +252,57 @@ export default function TasksPage({ userId }: { userId: string }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">Chargement...</p>
+          <p className="mt-4 text-gray-600">Chargement...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      {/* Header moderne */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800 border-b border-gray-200 dark:border-gray-700 shadow-lg">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link href="/dashboard" className="text-white hover:text-blue-100 transition-colors">
-                <Home className="w-6 h-6" />
-              </Link>
-              <div>
-                <h1 className="text-xl font-bold text-white">Daily Reset</h1>
-                <p className="text-sm text-blue-100">{formattedDate}</p>
-              </div>
+    <div className="min-h-screen">
+      <main className="app-container py-8">
+        <div className="card">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-2xl font-semibold text-gray-900">Progression du jour</h2>
+              <p className="text-sm text-gray-600">{completedTasks} sur {totalTasks} tâches complétées</p>
             </div>
-            
-            <div className="flex items-center gap-3">
-              <button
-                onClick={toggleTheme}
-                className="p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all duration-200"
-              >
-                {theme === 'light' ? (
-                  <Moon className="w-5 h-5" />
-                ) : (
-                  <Sun className="w-5 h-5" />
-                )}
-              </button>
-              
-              <Link
-                href="/dashboard/calendar"
-                className="p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all duration-200"
-              >
-                <Calendar className="w-5 h-5" />
-              </Link>
-              
-              <SignOutButton />
-            </div>
+            <div className={`text-2xl font-bold ${progressText}`}>{percentage}%</div>
           </div>
-        </div>
-      </div>
 
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Progress Section moderne */}
-        <div className="mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-xl">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Progression du jour</h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
-                  {completedTasks} sur {totalTasks} tâches complétées
-                </p>
-              </div>
-              <div className={`text-4xl font-extrabold ${progressText} drop-shadow-sm`}>
-                {percentage}%
-              </div>
-            </div>
-            
-            <div className="w-full h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden shadow-inner">
-              <div 
-                className={`h-full ${progressColor} transition-all duration-1000 ease-out rounded-full shadow-lg`}
-                style={{ width: `${percentage}%` }}
-              />
-            </div>
+          <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden mb-6">
+            <div className={`${progressColor} h-full rounded-full`} style={{ width: `${percentage}%` }} />
           </div>
-        </div>
 
-        {/* Add Task */}
-        <div className="mb-8">
-          <div className="flex gap-3">
+          {/* Add Task */}
+          <div className="flex gap-3 mb-6">
             <input
               type="text"
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && addTask()}
               placeholder="Ajouter une nouvelle tâche..."
-              className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-4 py-2 rounded-md border border-gray-200"
             />
-            <button
-              onClick={addTask}
-              disabled={!newTask.trim()}
-              className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:transform-none"
-            >
-              Ajouter
-            </button>
+            <button onClick={addTask} disabled={!newTask.trim()} className="btn bg-blue-600 text-white">Ajouter</button>
           </div>
-        </div>
 
-        {/* Tasks List */}
-        {tasks.length === 0 ? (
-          <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-            <p className="text-gray-600 dark:text-gray-400">Aucune tâche pour aujourd'hui</p>
-            <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">Commence par ajouter ta première tâche</p>
-          </div>
-        ) : (
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext
-              items={tasks.map(task => task.id)}
-              strategy={verticalListSortingStrategy}
-            >
-              <div className="space-y-3">
-                {tasks.map(task => (
-                  <TaskItem
-                    key={task.id}
-                    task={task}
-                    onToggle={toggleTask}
-                    onDelete={deleteTask}
-                  />
-                ))}
-              </div>
-            </SortableContext>
-          </DndContext>
-        )}
+          {/* Tasks List */}
+          {tasks.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-600">Aucune tâche pour aujourd'hui</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {tasks.map(task => (
+                <TaskItem key={task.id} task={task} onToggle={toggleTask} onDelete={deleteTask} />
+              ))}
+            </div>
+          )}
+        </div>
       </main>
     </div>
   )
