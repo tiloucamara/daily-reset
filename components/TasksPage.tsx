@@ -46,7 +46,7 @@ function TaskItem({ task, onToggle, onDelete }: {
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-sm transition-all"
+      className="group flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-lg hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200 cursor-pointer animate-in fade-in slide-in-from-bottom-2"
     >
       <button
         className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 cursor-grab"
@@ -58,12 +58,12 @@ function TaskItem({ task, onToggle, onDelete }: {
 
       <button
         onClick={() => onToggle(task.id)}
-        className="flex-shrink-0"
+        className="flex-shrink-0 transition-transform hover:scale-110"
       >
         {task.is_completed ? (
-          <CheckCircle className="w-5 h-5 text-green-500" />
+          <CheckCircle className="w-6 h-6 text-green-500 animate-pulse" />
         ) : (
-          <Circle className="w-5 h-5 text-gray-400" />
+          <Circle className="w-6 h-6 text-gray-400 hover:text-blue-500 transition-colors" />
         )}
       </button>
 
@@ -73,9 +73,9 @@ function TaskItem({ task, onToggle, onDelete }: {
 
       <button
         onClick={() => onDelete(task.id)}
-        className="text-gray-400 hover:text-red-500 transition-colors"
+        className="text-gray-400 hover:text-red-500 transition-all duration-200 hover:scale-110 opacity-0 group-hover:opacity-100"
       >
-        <Trash2 className="w-4 h-4" />
+        <Trash2 className="w-5 h-5" />
       </button>
     </div>
   )
@@ -228,22 +228,22 @@ export default function TasksPage({ userId }: { userId: string }) {
   const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
 
   // Déterminer la couleur
-  let progressColor = 'bg-gray-300'
+  let progressColor = 'bg-gradient-to-r from-gray-300 to-gray-400'
   let progressText = 'text-gray-500'
   
   if (totalTasks > 0) {
     if (percentage === 0) {
-      progressColor = 'bg-red-900'
+      progressColor = 'bg-gradient-to-r from-red-800 to-red-900'
       progressText = 'text-red-900'
     } else if (percentage < 30) {
-      progressColor = 'bg-red-500'
-      progressText = 'text-red-500'
+      progressColor = 'bg-gradient-to-r from-red-400 to-red-600'
+      progressText = 'text-red-600'
     } else if (percentage < 70) {
-      progressColor = 'bg-yellow-500'
-      progressText = 'text-yellow-500'
+      progressColor = 'bg-gradient-to-r from-yellow-400 to-orange-500'
+      progressText = 'text-orange-600'
     } else {
-      progressColor = 'bg-green-500'
-      progressText = 'text-green-500'
+      progressColor = 'bg-gradient-to-r from-green-400 to-green-600'
+      progressText = 'text-green-600'
     }
   }
 
@@ -262,38 +262,38 @@ export default function TasksPage({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header simple */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-4xl mx-auto px-4 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Header moderne */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800 border-b border-gray-200 dark:border-gray-700 shadow-lg">
+        <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/dashboard" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                <Home className="w-5 h-5" />
+              <Link href="/dashboard" className="text-white hover:text-blue-100 transition-colors">
+                <Home className="w-6 h-6" />
               </Link>
               <div>
-                <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Daily Reset</h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">{formattedDate}</p>
+                <h1 className="text-xl font-bold text-white">Daily Reset</h1>
+                <p className="text-sm text-blue-100">{formattedDate}</p>
               </div>
             </div>
             
             <div className="flex items-center gap-3">
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all duration-200"
               >
                 {theme === 'light' ? (
-                  <Moon className="w-5 h-5 text-gray-600" />
+                  <Moon className="w-5 h-5" />
                 ) : (
-                  <Sun className="w-5 h-5 text-gray-400" />
+                  <Sun className="w-5 h-5" />
                 )}
               </button>
               
               <Link
                 href="/dashboard/calendar"
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all duration-200"
               >
-                <Calendar className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                <Calendar className="w-5 h-5" />
               </Link>
               
               <SignOutButton />
@@ -303,24 +303,24 @@ export default function TasksPage({ userId }: { userId: string }) {
       </div>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Progress Section */}
+        {/* Progress Section moderne */}
         <div className="mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-xl">
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="font-medium text-gray-900 dark:text-white mb-1">Progression du jour</h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Progression du jour</h2>
+                <p className="text-lg text-gray-600 dark:text-gray-400">
                   {completedTasks} sur {totalTasks} tâches complétées
                 </p>
               </div>
-              <div className={`text-xl font-bold ${progressText}`}>
+              <div className={`text-4xl font-extrabold ${progressText} drop-shadow-sm`}>
                 {percentage}%
               </div>
             </div>
             
-            <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div className="w-full h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden shadow-inner">
               <div 
-                className={`h-full ${progressColor} transition-all duration-500`}
+                className={`h-full ${progressColor} transition-all duration-1000 ease-out rounded-full shadow-lg`}
                 style={{ width: `${percentage}%` }}
               />
             </div>
@@ -341,7 +341,7 @@ export default function TasksPage({ userId }: { userId: string }) {
             <button
               onClick={addTask}
               disabled={!newTask.trim()}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+              className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:transform-none"
             >
               Ajouter
             </button>
